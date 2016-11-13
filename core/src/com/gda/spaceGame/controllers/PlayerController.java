@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.gda.spaceGame.entities.Bullet;
 import com.gda.spaceGame.entities.Player;
 
@@ -15,7 +16,7 @@ import static com.gda.spaceGame.SpaceMain.SCALE;
 /**
  * Created by smith on 10/18/16.
  */
-public class PlayerController implements InputProcessor {
+public class PlayerController {
 
     private Player player;
     private float angle = 0f;
@@ -44,52 +45,68 @@ public class PlayerController implements InputProcessor {
 
     public void act(Batch batch, float alpha) {
 
-        for (int i = 0; i < 2; i++) {
+        shipControlling(batch, alpha);
 
-            if (Gdx.input.isTouched(i)) {
-
-                if (Gdx.input.getX(i) > Gdx.graphics.getWidth() / 2) {
-
-                    if (!touch) {
-                        gamepadPos.set(Gdx.input.getX(i), Gdx.input.getY(i));
-                        joystickPos.set(Gdx.input.getX(i), Gdx.input.getY(i));
-                        touch = true;
-                    }
-
-                    angle = -MathUtils.radiansToDegrees * MathUtils.atan2(Gdx.input.getY(i) - gamepadPos.y, Gdx.input.getX(i) - gamepadPos.x);
-                    if (angle < 0) angle += 360;
-
-                    if (Math.hypot(Gdx.input.getY(i) - gamepadPos.y, Gdx.input.getX(i) - gamepadPos.x) < gamepad.getWidth() / 2 / SCALE) {
-                        joystickPos.x = Gdx.input.getX(i);
-                        joystickPos.y = Gdx.input.getY(i);
-                    } else {
-                        joystickPos.x = gamepadPos.x + gamepad.getWidth() / 2 / SCALE * MathUtils.cosDeg(-angle);
-                        joystickPos.y = gamepadPos.y + gamepad.getWidth() / 2 / SCALE * MathUtils.sinDeg(-angle);
-                    }
-
-                    batch.begin();
-                    gamepad.setPosition(gamepadPos.x - gamepad.getWidth() / 2 / SCALE, Gdx.graphics.getHeight() - gamepadPos.y - gamepad.getHeight() / 2 / SCALE);
-                    gamepad.draw(batch, alpha);
-
-                    joystick.setPosition(joystickPos.x - joystick.getWidth() / 2 / SCALE, Gdx.graphics.getHeight() - joystickPos.y - joystick.getHeight() / 2 / SCALE);
-                    joystick.draw(batch, alpha);
-                    batch.end();
-
-                    changePlayerAngle();
-                }
-
-                if (Gdx.input.getX(i) < Gdx.graphics.getWidth() / 2) {
-                    canShoot();
-                }
-
-            }
-
-            if (!Gdx.input.isTouched(i) && Gdx.input.getX(i) > Gdx.graphics.getWidth()/2) touch = false;
-
-        }
+        shootControlling();
 
         player.moveBy(player.getSpeed() * MathUtils.cosDeg(player.getAngle()), player.getSpeed() * MathUtils.sinDeg(player.getAngle()));
 
+    }
+
+    private void shootControlling() {
+        int i;
+
+        if (Gdx.input.isTouched(0) && Gdx.input.getX(0) < Gdx.graphics.getWidth()/2) i = 0;
+        else if (Gdx.input.isTouched(1) && Gdx.input.getX(1) < Gdx.graphics.getWidth()/2) i = 1;
+        else i = -1;
+
+        if (i >= 0) {
+            canShoot();
+        }
+
+    }
+
+    private void shipControlling(Batch batch, float alpha) {
+        int i = -1;
+
+        if (Gdx.input.isTouched(0) && Gdx.input.getX(0) > Gdx.graphics.getWidth()/2) i = 0;
+        else if (Gdx.input.isTouched(1) && Gdx.input.getX(1) > Gdx.graphics.getWidth()/2) i = 1;
+
+        if (i >= 0) {
+            if (!touch) {
+                gamepadPos.set(Gdx.input.getX(i), Gdx.input.getY(i));
+                joystickPos.set(Gdx.input.getX(i), Gdx.input.getY(i));
+                touch = true;
+            }
+
+            angle = -MathUtils.radiansToDegrees * MathUtils.atan2(Gdx.input.getY(i) - gamepadPos.y, Gdx.input.getX(i) - gamepadPos.x);
+            if (angle < 0) angle += 360;
+
+            if (Math.hypot(Gdx.input.getY(i) - gamepadPos.y, Gdx.input.getX(i) - gamepadPos.x) < gamepad.getWidth() / 2 / SCALE) {
+                joystickPos.x = Gdx.input.getX(i);
+                joystickPos.y = Gdx.input.getY(i);
+            } else {
+                joystickPos.x = gamepadPos.x + gamepad.getWidth() / 2 / SCALE * MathUtils.cosDeg(-angle);
+                joystickPos.y = gamepadPos.y + gamepad.getWidth() / 2 / SCALE * MathUtils.sinDeg(-angle);
+            }
+
+            draw(batch, alpha);
+            changePlayerAngle();
+
+            System.out.println(i + "___" + Gdx.input.getX(i) + "___" + Gdx.input.isTouched(i));
+            if (!Gdx.input.isTouched(i)) touch = false;
+        }
+        else touch = false;
+    }
+
+    public void draw(Batch batch, float parentAlpha) {
+        batch.begin();
+        gamepad.setPosition(gamepadPos.x - gamepad.getWidth() / 2 / SCALE, Gdx.graphics.getHeight() - gamepadPos.y - gamepad.getHeight() / 2 / SCALE);
+        gamepad.draw(batch, parentAlpha);
+
+        joystick.setPosition(joystickPos.x - joystick.getWidth() / 2 / SCALE, Gdx.graphics.getHeight() - joystickPos.y - joystick.getHeight() / 2 / SCALE);
+        joystick.draw(batch, parentAlpha);
+        batch.end();
     }
 
     private void canShoot() {
@@ -136,45 +153,5 @@ public class PlayerController implements InputProcessor {
 
         }
 
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 }

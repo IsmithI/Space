@@ -7,22 +7,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.gda.spaceGame.GUI.Button;
 import com.gda.spaceGame.GUI.MenuShip;
 import com.gda.spaceGame.SpaceMain;
 import com.gda.spaceGame.controllers.*;
-import com.gda.spaceGame.entities.Bullet;
 import com.gda.spaceGame.entities.Player;
-import com.gda.spaceGame.entities.enemies.Enemy;
-
-import java.util.EnumMap;
-import java.util.Iterator;
+import com.gda.spaceGame.utilities.parallax.ParallaxBackground;
+import com.gda.spaceGame.utilities.parallax.ParallaxLayer;
 
 import static com.gda.spaceGame.SpaceMain.SCALE;
 import static com.gda.spaceGame.SpaceMain.gameState;
@@ -48,10 +46,9 @@ public class GameScreen implements Screen, InputProcessor {
     private PlayerController playerController;
     private PauseMenuController pauseMenuController;
     private EnemyController enemyController;
-    private CollisionController collisionController;
 
-    private Texture texture;
-    private int scrX = 0, scrY = 0;
+    private Texture background;
+    private ParallaxBackground bck;
 
     private BitmapFont font;
 
@@ -81,11 +78,15 @@ public class GameScreen implements Screen, InputProcessor {
             button.setVisible(false);
         }
         enemyController = new EnemyController(playerController, stage);
-        collisionController = new CollisionController(stage, player);
+        enemyController.addEnemy(enemyController.enemyLevel0());
 
-        texture = new Texture(Gdx.files.internal("background.gif"));
-        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-
+        background = new Texture(Gdx.files.internal("background.gif"));
+        bck = new ParallaxBackground(new ParallaxLayer[]{
+                new ParallaxLayer(new TextureRegion(background),
+                        new Vector2(player.getSpeed() * MathUtils.cosDeg(player.getAngle()),
+                                player.getSpeed() * MathUtils.sinDeg(player.getAngle())),
+                        new Vector2(0, 0))
+        }, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Vector2(50, 50));
 
         input = new InputMultiplexer();
         input.addProcessor(pauseMenuController);
@@ -118,9 +119,12 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        bck.getLayers()[0].parallaxRatio.set(player.getSpeed() * MathUtils.cosDeg(player.getAngle()),
+                                                player.getSpeed() * MathUtils.sinDeg(player.getAngle()));
+        bck.getLayers()[0].startPosition.set(new Vector2(0, 0));
+        bck.render(delta);
+
         guiBatch.begin();
-        guiBatch.draw(texture, 0, 0, scrX, scrY,
-                Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         font.draw(guiBatch, money + "$", 32/SCALE, Gdx.graphics.getHeight() - 32/SCALE, 0, Align.left, false);
         font.draw(guiBatch, "Time: " + score, 32/SCALE, Gdx.graphics.getHeight() - 68/SCALE, 0, Align.left, false);
         guiBatch.end();
@@ -140,9 +144,6 @@ public class GameScreen implements Screen, InputProcessor {
             pauseMenuController.setVisible(false);
             pauseMenuController.getPauseButton().setVisible(true);
 
-            scrX += player.getSpeed() * MathUtils.cosDeg(player.getAngle());
-            scrY -= player.getSpeed() * MathUtils.sinDeg(player.getAngle());
-
             camera.update();
             cameraMove();
             stage.act();
@@ -152,6 +153,7 @@ public class GameScreen implements Screen, InputProcessor {
             enemyController.act();
 
             if (player.collide()) {
+                player.die();
                 gameState = FINISH;
             }
 

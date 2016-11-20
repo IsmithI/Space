@@ -114,7 +114,7 @@ public class PlayerController {
 
     private void canShoot() {
         if (timer <= 0) {
-            timer += 0.5f;
+            timer += 0.3f;
             shoot();
         }
         timer -= Gdx.graphics.getDeltaTime();
@@ -125,7 +125,7 @@ public class PlayerController {
             case SINGLE:
                 player.getStage().addActor(new Bullet(
                         new Texture(Gdx.files.internal("particles/bullet1.png")),
-                        20f,
+                        30f + player.getSpeed(),
                         player.getX() + player.getSprite().getWidth()/SCALE*MathUtils.cosDeg(player.getAngle()),
                         player.getY() + player.getSprite().getHeight()/SCALE*MathUtils.sinDeg(player.getAngle()),
                         player.getAngle()

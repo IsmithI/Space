@@ -6,12 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.gda.spaceGame.entities.Player;
 import com.gda.spaceGame.entities.enemies.Enemy;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by Smith on 13.11.2016.
@@ -48,7 +43,7 @@ public class EnemyController {
     private void spawnEnemy() {
         switch (difficulty) {
             case 0:
-                addEnemy(new Enemy(difficulty, new Texture(Gdx.files.internal("enemies/enemy_ship_1.png")), 12f, 1f, 5));
+                addEnemy(enemyLevel0());
         }
     }
 
@@ -68,6 +63,10 @@ public class EnemyController {
         enemy.setPosition(playerPosition.x + Gdx.graphics.getWidth()*3/2 * MathUtils.cosDeg(randomAngle),
                             playerPosition.y + Gdx.graphics.getWidth()*3/2 * MathUtils.sinDeg(randomAngle));
         stage.addActor(enemy);
+    }
+
+    public Enemy enemyLevel0() {
+        return new Enemy(0, new Texture(Gdx.files.internal("enemies/enemy_ship_1.png")), 11f, 1f, 5);
     }
 
     public void updatePlayerPosition(float x, float y) {

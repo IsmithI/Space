@@ -1,5 +1,6 @@
 package com.gda.spaceGame.entities.enemies;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.gda.spaceGame.entities.Bullet;
 import com.gda.spaceGame.entities.Player;
+import com.gda.spaceGame.entities.decorations.Punkt;
 import com.gda.spaceGame.screens.GameScreen;
 
 import static com.gda.spaceGame.SpaceMain.SCALE;
@@ -27,6 +29,8 @@ public class Enemy extends Actor {
 
     private final int z = 3;
 
+    private float punktSpawnTimer = 0.5f;
+
     public Enemy(int level, Texture texture, float speed, float turn_angle, int worth) {
         this.level = level;
         this.speed = speed;
@@ -39,7 +43,7 @@ public class Enemy extends Actor {
         sprite.rotate90(true);
 
         bounds = new Circle();
-        bounds.setRadius(sprite.getWidth()/2/SCALE);
+        bounds.setRadius(sprite.getWidth()/4/SCALE);
     }
 
     @Override
@@ -49,6 +53,16 @@ public class Enemy extends Actor {
         sprite.setRotation(angle);
 
         checkCollision();
+
+        if (punktSpawnTimer <= 0) {
+            spawnPunkt();
+            punktSpawnTimer = 0.5f;
+        }
+        punktSpawnTimer -= Gdx.graphics.getDeltaTime();
+    }
+
+    private void spawnPunkt() {
+        getStage().addActor(new Punkt(new Texture(Gdx.files.internal("particles/punkt.png")), getX(), getY(), angle));
     }
 
     public boolean checkCollision() {

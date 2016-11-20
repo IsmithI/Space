@@ -40,7 +40,7 @@ public class Player extends Actor{
         sprite.setScale(1/SCALE);
         sprite.rotate90(true);
 
-        bounds = new Circle(getX(), getY(), getSprite().getWidth()/2/SCALE);
+        bounds = new Circle(getX(), getY(), getSprite().getWidth()/4/SCALE);
     }
 
     @Override
@@ -110,5 +110,9 @@ public class Player extends Actor{
 
     public Circle getBounds() {
         return bounds;
+    }
+
+    public void die() {
+        bounds.setRadius(0);
     }
 }

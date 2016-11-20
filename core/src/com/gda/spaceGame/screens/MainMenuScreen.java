@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -15,6 +17,8 @@ import com.gda.spaceGame.GUI.MenuShip;
 import com.gda.spaceGame.SpaceMain;
 import com.gda.spaceGame.controllers.GameState;
 import com.gda.spaceGame.controllers.ShipChooseController;
+import com.gda.spaceGame.utilities.parallax.ParallaxBackground;
+import com.gda.spaceGame.utilities.parallax.ParallaxLayer;
 
 import java.math.BigInteger;
 
@@ -46,6 +50,8 @@ public class MainMenuScreen implements Screen, InputProcessor {
     private Texture background;
     private int srcY = 0;
 
+    private ParallaxBackground bck;
+
     private Preferences gameData;
 
     //Game data variables
@@ -66,7 +72,12 @@ public class MainMenuScreen implements Screen, InputProcessor {
         stage.addActor(shipChooseController.getNextShip());
 
         background = new Texture(Gdx.files.internal("background.gif"));
-        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+//        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+
+        bck = new ParallaxBackground(new ParallaxLayer[]{
+                new ParallaxLayer(new TextureRegion(background), new Vector2(0, 5), new Vector2(0, 0))
+        }, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Vector2(0, 100));
+
 
         input = new InputMultiplexer();
         input.addProcessor(stage);
@@ -131,10 +142,12 @@ public class MainMenuScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
-        batch.draw(background, 0, 0, 0, srcY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.end();
-        srcY -= 6;
+//        batch.begin();
+//        batch.draw(background, 0, 0, 0, srcY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        batch.end();
+//        srcY -= 6;
+
+        bck.render(delta);
 
         camera.update();
 

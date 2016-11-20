@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.gda.spaceGame.controllers.GameState;
@@ -22,6 +23,7 @@ public class Bullet extends Actor{
     private float angle;
     private float lifetime = 5;
     private final int z = 0;
+    private Circle bounds;
 
     public Bullet(Texture texture, float speed, float x, float y, float angle) {
         this.sprite = new Sprite(texture);
@@ -31,6 +33,8 @@ public class Bullet extends Actor{
         this.speed = speed;
         this.angle = angle;
         setPosition(x, y);
+
+        bounds = new Circle(x, y, sprite.getWidth()/2/SCALE);
     }
 
     @Override
@@ -47,10 +51,15 @@ public class Bullet extends Actor{
         sprite.setPosition(getX() - sprite.getWidth()/2, getY() - sprite.getHeight()/2);
         sprite.draw(batch);
 
+        bounds.setPosition(getX(), getY());
     }
 
     @Override
     public int getZIndex() {
         return z;
+    }
+
+    public Circle getBounds() {
+        return bounds;
     }
 }

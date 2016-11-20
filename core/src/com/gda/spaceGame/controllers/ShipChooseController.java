@@ -26,10 +26,10 @@ public class ShipChooseController extends Actor{
 
         ships = new ArrayList<MenuShip>();
 
-        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship1.png")), 5, 5, ShootType.SINGLE));
-        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship2.png")), 8, 5, ShootType.SINGLE));
-        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship3.png")), 5, 8, ShootType.SINGLE));
-        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship3.png")), 10, 8, ShootType.DOUBLE));
+        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship1.png")), 8, 5, ShootType.SINGLE));
+        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship2.png")), 10, 5, ShootType.SINGLE));
+        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship3.png")), 10, 8, ShootType.SINGLE));
+//        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship3.png")), 15, 8, ShootType.DOUBLE));
 
         nextShip = new Button(new Texture(Gdx.files.internal("gui/buttons/arrow.png")), "",
                 Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/2) {

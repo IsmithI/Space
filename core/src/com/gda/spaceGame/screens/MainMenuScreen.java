@@ -1,9 +1,6 @@
 package com.gda.spaceGame.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,6 +15,8 @@ import com.gda.spaceGame.GUI.MenuShip;
 import com.gda.spaceGame.SpaceMain;
 import com.gda.spaceGame.controllers.GameState;
 import com.gda.spaceGame.controllers.ShipChooseController;
+
+import java.math.BigInteger;
 
 import static com.gda.spaceGame.SpaceMain.SCALE;
 import static com.gda.spaceGame.SpaceMain.gameState;
@@ -38,7 +37,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
     private OrthographicCamera camera;
     private ExtendViewport viewport;
 
-    private BitmapFont font;
+    private BitmapFont labelFont, gameDataFont;
 
     private ShipChooseController shipChooseController;
 
@@ -46,6 +45,11 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
     private Texture background;
     private int srcY = 0;
+
+    private Preferences gameData;
+
+    //Game data variables
+    private int money, highscore;
 
     public MainMenuScreen(SpaceMain gam) {
         game = gam;
@@ -70,26 +74,49 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
         Gdx.input.setInputProcessor(input);
 
-        generateFont((int) (72 / SCALE));
+        generateFont();
 
         gameState = GameState.MAINMENU;
 
+        gameData = Gdx.app.getPreferences("GameData");
+        loadGameData();
+    }
+
+    private void loadGameData() {
+        if (gameData.contains("money")) money = gameData.getInteger("money");
+        else {
+            gameData.putInteger("money", 0);
+            money = 0;
+        }
+
+        if (gameData.contains("highscore")) highscore = gameData.getInteger("highscore");
+        else {
+            gameData.putInteger("highscore", 0);
+            highscore = 0;
+        }
+
+        gameData.flush();
     }
 
     private void drawGUI() {
         batch.begin();
 
-        font.draw(batch, "Tap to start", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()*7/8, 0, Align.center, false);
+        labelFont.draw(batch, "Tap to start", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()*7/8, 0, Align.center, false);
+        gameDataFont.draw(batch, money + "$", Gdx.graphics.getWidth()*2/3, Gdx.graphics.getHeight()/6, 0, Align.center, false);
+        gameDataFont.draw(batch, "Best time" + highscore, Gdx.graphics.getWidth()*2/3, Gdx.graphics.getHeight()/6 - 48/SCALE, 0, Align.center, false);
 
         batch.end();
     }
 
-    private void generateFont(int size) {
+    private void generateFont() {
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/m12.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        parameter.size = size;
-        font = gen.generateFont(parameter);
+        parameter.size = (int) (72/SCALE);
+        labelFont = gen.generateFont(parameter);
+
+        parameter.size = (int) (36/SCALE);
+        gameDataFont = gen.generateFont(parameter);
 
         gen.dispose();
     }
@@ -107,7 +134,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
         batch.begin();
         batch.draw(background, 0, 0, 0, srcY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
-        srcY -= 5;
+        srcY -= 6;
 
         camera.update();
 

@@ -12,6 +12,8 @@ import com.gda.spaceGame.entities.Bullet;
 import com.gda.spaceGame.entities.Player;
 
 import static com.gda.spaceGame.SpaceMain.SCALE;
+import static com.gda.spaceGame.SpaceMain.gameState;
+import static com.gda.spaceGame.controllers.GameState.FINISH;
 
 /**
  * Created by smith on 10/18/16.
@@ -45,9 +47,11 @@ public class PlayerController {
 
     public void act(Batch batch, float alpha) {
 
-        shipControlling(batch, alpha);
-
-        shootControlling();
+        if (gameState != FINISH) {
+            shipControlling(batch, alpha);
+            shootControlling();
+        }
+        else player.setVisible(false);
 
         player.moveBy(player.getSpeed() * MathUtils.cosDeg(player.getAngle()), player.getSpeed() * MathUtils.sinDeg(player.getAngle()));
 
@@ -93,7 +97,6 @@ public class PlayerController {
             draw(batch, alpha);
             changePlayerAngle();
 
-            System.out.println(i + "___" + Gdx.input.getX(i) + "___" + Gdx.input.isTouched(i));
             if (!Gdx.input.isTouched(i)) touch = false;
         }
         else touch = false;
@@ -122,12 +125,16 @@ public class PlayerController {
             case SINGLE:
                 player.getStage().addActor(new Bullet(
                         new Texture(Gdx.files.internal("particles/bullet1.png")),
-                        10f,
+                        20f,
                         player.getX() + player.getSprite().getWidth()/SCALE*MathUtils.cosDeg(player.getAngle()),
                         player.getY() + player.getSprite().getHeight()/SCALE*MathUtils.sinDeg(player.getAngle()),
                         player.getAngle()
                 ));
         }
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     private void changePlayerAngle() {

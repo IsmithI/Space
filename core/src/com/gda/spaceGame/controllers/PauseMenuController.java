@@ -1,7 +1,9 @@
 package com.gda.spaceGame.controllers;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
@@ -17,6 +19,8 @@ import java.util.Set;
 
 import static com.gda.spaceGame.SpaceMain.SCALE;
 import static com.gda.spaceGame.SpaceMain.gameState;
+import static com.gda.spaceGame.controllers.GameState.*;
+import static com.gda.spaceGame.screens.GameScreen.gameData;
 import static com.gda.spaceGame.screens.MainMenuScreen.currentShip;
 
 /**
@@ -27,19 +31,25 @@ public class PauseMenuController implements InputProcessor {
     private Texture background;
     private Button restart, toMenu, resume, pause;
     private Vector2 basePosition;
+    private final GameScreen screen;
 
     private Set<Actor> buttons;
 
-    public PauseMenuController(float baseX, float baseY, final SpaceMain game) {
+    public PauseMenuController(float baseX, float baseY, final SpaceMain game, final Screen screen1) {
         background = new Texture(Gdx.files.internal("gui/pauseBack.png"));
         basePosition = new Vector2(baseX - background.getWidth()/2/SCALE, baseY - background.getHeight()/2/SCALE);
+        screen = (GameScreen) screen1;
 
         restart = new Button(new Texture(Gdx.files.internal("gui/restart.png")), "R",
                 basePosition.x + background.getWidth()/4/SCALE, basePosition.y + background.getHeight()*2/3/SCALE) {
             @Override
             public void act() {
                 if (isVisible()) {
-                    gameState = GameState.RUN;
+                    if (gameState == FINISH)
+                        screen.saveData();
+                    GameScreen.score = 0;
+                    GameScreen.money = 0;
+                    gameState = RUN;
                     game.setScreen(new GameScreen(game, currentShip));
                 }
             }
@@ -50,7 +60,9 @@ public class PauseMenuController implements InputProcessor {
             @Override
             public void act() {
                 if (isVisible()) {
-                    gameState = GameState.MAINMENU;
+                    if (gameState == FINISH)
+                        screen.saveData();
+                    gameState = MAINMENU;
                     game.setScreen(new MainMenuScreen(game));
                 }
             }
@@ -61,18 +73,22 @@ public class PauseMenuController implements InputProcessor {
             @Override
             public void act() {
                 if (isVisible())
-                    gameState = GameState.RUN;
+                    gameState = RUN;
             }
         };
         pause = new Button(new Texture(Gdx.files.internal("gui/pause.png")), "",
                 Gdx.graphics.getWidth() - 128/2/SCALE - 8, Gdx.graphics.getHeight() - 128/2/SCALE - 8) {
             @Override
             public void act() {
-                if (gameState == GameState.RUN) {
-                    gameState = GameState.PAUSE;
+                if (gameState != FINISH) {
+                    if (gameState == RUN) {
+                        gameState = PAUSE;
+                    } else if (gameState == PAUSE) {
+                        gameState = RUN;
+                    }
                 }
-                else if (gameState == GameState.PAUSE) {
-                    gameState = GameState.RUN;
+                else {
+                    setVisible(false);
                 }
             }
         };
@@ -88,6 +104,13 @@ public class PauseMenuController implements InputProcessor {
         }
 
         buttons.add(pause);
+    }
+
+    public void showFinishMenu() {
+        restart.setVisible(true);
+        toMenu.setVisible(true);
+        resume.setVisible(false);
+        pause.setVisible(false);
     }
 
     public void draw(Batch batch) {

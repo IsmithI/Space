@@ -35,13 +35,13 @@ public class MenuShip extends Actor {
 
     private void createBuffIcons() {
         //Speed
-        if (speed <= 5) {
+        if (speed <= 8) {
             speedIcon = new Sprite(new Texture(Gdx.files.internal("gui/shipStats/speed1.png")));
         }
-        else if (speed <= 8) {
+        else if (speed <= 12) {
             speedIcon = new Sprite(new Texture(Gdx.files.internal("gui/shipStats/speed2.png")));
         }
-        else if (speed <= 12) {
+        else if (speed <= 16) {
             speedIcon = new Sprite(new Texture(Gdx.files.internal("gui/shipStats/speed3.png")));
         }
         speedIcon.setOrigin(0, 0);
@@ -49,10 +49,10 @@ public class MenuShip extends Actor {
         speedIcon.setPosition(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/6 - speedIcon.getHeight()/SCALE);
 
         //Turn angle
-        if (turn <= 5) {
+        if (turn <= 6) {
             turnIcon = new Sprite(new Texture(Gdx.files.internal("gui/shipStats/turn1.png")));
         }
-        else if (turn <= 8) {
+        else if (turn <= 12) {
             turnIcon = new Sprite(new Texture(Gdx.files.internal("gui/shipStats/turn2.png")));
         }
         turnIcon.setOrigin(0, 0);

@@ -22,7 +22,6 @@ public class Bullet extends Actor{
     private final float speed;
     private float angle;
     private float lifetime = 5;
-    private final int z = 0;
     private Circle bounds;
 
     public Bullet(Texture texture, float speed, float x, float y, float angle) {
@@ -56,7 +55,7 @@ public class Bullet extends Actor{
 
     @Override
     public int getZIndex() {
-        return z;
+        return 2;
     }
 
     public Circle getBounds() {

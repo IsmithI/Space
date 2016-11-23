@@ -50,7 +50,6 @@ public class PauseMenuController implements InputProcessor {
                     GameScreen.score = 0;
                     GameScreen.money = 0;
                     gameState = RUN;
-                    game.getScreen().dispose();
                     game.setScreen(new GameScreen(game, currentShip));
                 }
             }

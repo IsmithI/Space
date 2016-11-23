@@ -182,8 +182,6 @@ public class MainMenuScreen implements Screen, InputProcessor {
     public void dispose() {
         batch.dispose();
         stage.dispose();
-        labelFont.dispose();
-        gameDataFont.dispose();
     }
 
 

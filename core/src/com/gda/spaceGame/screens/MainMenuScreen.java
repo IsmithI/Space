@@ -20,7 +20,6 @@ import com.gda.spaceGame.GUI.MenuShip;
 import com.gda.spaceGame.SpaceMain;
 import com.gda.spaceGame.controllers.GameState;
 import com.gda.spaceGame.controllers.ShipChooseController;
-import com.gda.spaceGame.entities.decorations.MainText;
 import com.gda.spaceGame.utilities.parallax.ParallaxBackground;
 import com.gda.spaceGame.utilities.parallax.ParallaxLayer;
 
@@ -80,9 +79,6 @@ public class MainMenuScreen implements Screen, InputProcessor {
         bck = new ParallaxBackground(new ParallaxLayer[]{
                 new ParallaxLayer(new TextureRegion(background), new Vector2(0, 5), new Vector2(0, 0))
         }, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Vector2(0, 100));
-
-        MainText mainText = new MainText(game, shipChooseController);
-        stage.addActor(mainText);
 
         input = new InputMultiplexer();
         input.addProcessor(stage);

@@ -13,9 +13,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gda.spaceGame.GUI.Button;
 import com.gda.spaceGame.GUI.MenuShip;
 import com.gda.spaceGame.SpaceMain;
 import com.gda.spaceGame.controllers.GameState;
@@ -124,8 +123,16 @@ public class MainMenuScreen implements Screen, InputProcessor {
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/m12.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-//        parameter.size = (int) (72/SCALE);
-//        labelFont = gen.generateFont(parameter);
+        parameter.size = (int) (72/SCALE);
+        labelFont = gen.generateFont(parameter);
+
+        stage.addActor(new Button("Tap to screen", 0, 0, 200, 200, labelFont){
+            @Override
+            public void act(){
+                currentShip = shipChooseController.getCurrentShip();
+                game.setScreen(new GameScreen(game, currentShip));
+            }
+        });
 
         parameter.size = (int) (36/SCALE);
         gameDataFont = gen.generateFont(parameter);

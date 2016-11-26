@@ -1,6 +1,7 @@
 package com.gda.spaceGame.GUI;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -29,11 +30,11 @@ public abstract class Button extends Actor {
         this.font = font;
 
         this.sprite.setOrigin(0, 0);
-        this.sprite.setScale(1/SCALE);
+        this.sprite.setScale(1 / SCALE);
 
-        setBounds(x - sprite.getWidth()/2/SCALE, y - sprite.getHeight()/2/SCALE, sprite.getWidth()/SCALE, sprite.getHeight()/SCALE);
+        setBounds(x - sprite.getWidth() / 2 / SCALE, y - sprite.getHeight() / 2 / SCALE, sprite.getWidth() / SCALE, sprite.getHeight() / SCALE);
 
-        addListener(new InputListener(){
+        addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -49,9 +50,10 @@ public abstract class Button extends Actor {
     public Button(CharSequence value, float x, float y, float width, float height, BitmapFont font) {
         this.value = value;
         this.font = font;
+        font.setColor(Color.WHITE);
         setBounds(x, y, width, height);
 
-        addListener(new InputListener(){
+        addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return super.touchDown(event, x, y, pointer, button);
@@ -68,11 +70,11 @@ public abstract class Button extends Actor {
         this.sprite = new Sprite(texture);
 
         this.sprite.setOrigin(0, 0);
-        this.sprite.setScale(1/SCALE);
+        this.sprite.setScale(1 / SCALE);
 
-        setBounds(x - sprite.getWidth()/2/SCALE, y - sprite.getHeight()/2/SCALE, sprite.getWidth()/SCALE, sprite.getHeight()/SCALE);
+        setBounds(x - sprite.getWidth() / 2 / SCALE, y - sprite.getHeight() / 2 / SCALE, sprite.getWidth() / SCALE, sprite.getHeight() / SCALE);
 
-        addListener(new InputListener(){
+        addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -87,8 +89,10 @@ public abstract class Button extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha) {
-        sprite.setPosition(getX(), getY());
-        sprite.draw(batch);
+        if (sprite != null) {
+            sprite.setPosition(getX(), getY());
+            sprite.draw(batch);
+        }
         if (font != null) font.draw(batch, value, getX(), getY(), 0, Align.center, false);
     }
 
@@ -100,7 +104,6 @@ public abstract class Button extends Actor {
         }
         return false;
     }
-
 
 
     public abstract void act();

@@ -13,6 +13,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gda.spaceGame.GUI.MenuShip;
 import com.gda.spaceGame.SpaceMain;
 import com.gda.spaceGame.controllers.GameState;
@@ -38,7 +41,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
     private Batch batch;
     private OrthographicCamera camera;
-    private ExtendViewport viewport;
+    private Viewport viewport;
 
     private BitmapFont labelFont, gameDataFont;
 
@@ -62,6 +65,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+//        viewport.apply();
 
         stage = new Stage(viewport, batch);
 

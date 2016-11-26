@@ -22,6 +22,8 @@ import com.gda.spaceGame.entities.Player;
 import com.gda.spaceGame.utilities.parallax.ParallaxBackground;
 import com.gda.spaceGame.utilities.parallax.ParallaxLayer;
 
+import java.util.Comparator;
+
 import static com.gda.spaceGame.SpaceMain.SCALE;
 import static com.gda.spaceGame.SpaceMain.gameState;
 import static com.gda.spaceGame.controllers.GameState.FINISH;
@@ -48,7 +50,7 @@ public class GameScreen implements Screen, InputProcessor {
     private EnemyController enemyController;
 
     private Texture background;
-    private ParallaxBackground bck;
+    private int srcX, srcY;
 
     private BitmapFont font;
 
@@ -81,12 +83,7 @@ public class GameScreen implements Screen, InputProcessor {
         enemyController.addEnemy(enemyController.enemyLevel0());
 
         background = new Texture(Gdx.files.internal("background.gif"));
-        bck = new ParallaxBackground(new ParallaxLayer[]{
-                new ParallaxLayer(new TextureRegion(background),
-                        new Vector2(player.getSpeed() * MathUtils.cosDeg(player.getAngle()),
-                                player.getSpeed() * MathUtils.sinDeg(player.getAngle())),
-                        new Vector2(0, 0))
-        }, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Vector2(50, 50));
+        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
         input = new InputMultiplexer();
         input.addProcessor(pauseMenuController);
@@ -99,6 +96,9 @@ public class GameScreen implements Screen, InputProcessor {
         generateFont();
 
         gameState = RUN;
+
+        srcX = 0;
+        srcY = 0;
     }
 
     private void generateFont() {
@@ -116,27 +116,18 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        bck.getLayers()[0].parallaxRatio.set(player.getSpeed() * MathUtils.cosDeg(player.getAngle()),
-                                                player.getSpeed() * MathUtils.sinDeg(player.getAngle()));
-        bck.getLayers()[0].startPosition.set(new Vector2(0, 0));
-        bck.render(delta);
+        guiBatch.begin();
+        guiBatch.draw(background, 0, 0, srcX, srcY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        guiBatch.end();
 
         guiBatch.begin();
         font.draw(guiBatch, money + "$", 32/SCALE, Gdx.graphics.getHeight() - 32/SCALE, 0, Align.left, false);
         font.draw(guiBatch, "Time: " + score, 32/SCALE, Gdx.graphics.getHeight() - 68/SCALE, 0, Align.left, false);
         guiBatch.end();
-        stage.draw();
-
-        for (int j = 0; j < stage.getActors().size-1; j++) {
-            for (int i = j; i < stage.getActors().size - 1; i++) {
-                if (stage.getActors().get(j).getZIndex() > stage.getActors().get(j + 1).getZIndex()) {
-                    stage.getActors().swap(j, j + 1);
-                }
-            }
-        }
 
         //Begin of and acting part
         //___________________________
@@ -148,14 +139,12 @@ public class GameScreen implements Screen, InputProcessor {
             cameraMove();
             stage.act();
 
+            srcX += player.getSpeed() * MathUtils.cosDeg(player.getAngle());
+            srcY -= player.getSpeed() * MathUtils.sinDeg(player.getAngle());
+
             playerController.act(guiBatch, 0.5f);
             enemyController.updatePlayerPosition(player.getX(), player.getY());
             enemyController.act();
-
-            if (player.collide()) {
-                player.die();
-                gameState = FINISH;
-            }
 
             if (scoreTimer <= 0) {
                 score++;
@@ -176,6 +165,15 @@ public class GameScreen implements Screen, InputProcessor {
             }
             else pauseMenuController.showFinishMenu();
         }
+
+        stage.getActors().sort(new Comparator<Actor>() {
+            @Override
+            public int compare(Actor o1, Actor o2) {
+                return Integer.compare(o1.getZIndex(), o2.getZIndex());
+            }
+        });
+        stage.draw();
+        System.out.println(stage.getActors());
 
         guiBatch.begin();
         pauseMenuController.draw(guiBatch);
@@ -211,7 +209,11 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
+        background.dispose();
+        batch.dispose();
         guiBatch.dispose();
+        stage.dispose();
+        font.dispose();
     }
 
     public void saveData() {

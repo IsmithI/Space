@@ -40,7 +40,7 @@ public class PauseMenuController implements InputProcessor {
         basePosition = new Vector2(baseX - background.getWidth()/2/SCALE, baseY - background.getHeight()/2/SCALE);
         screen = (GameScreen) screen1;
 
-        restart = new Button(new Texture(Gdx.files.internal("gui/restart.png")), "R",
+        restart = new Button(new Texture(Gdx.files.internal("gui/restart.png")),
                 basePosition.x + background.getWidth()/4/SCALE, basePosition.y + background.getHeight()*2/3/SCALE) {
             @Override
             public void act() {
@@ -55,7 +55,7 @@ public class PauseMenuController implements InputProcessor {
             }
         };
 
-        toMenu = new Button(new Texture(Gdx.files.internal("gui/toMenu.png")), "",
+        toMenu = new Button(new Texture(Gdx.files.internal("gui/toMenu.png")),
                 basePosition.x + background.getWidth()*3/4/SCALE, basePosition.y + background.getHeight()*2/3/SCALE) {
             @Override
             public void act() {
@@ -68,7 +68,7 @@ public class PauseMenuController implements InputProcessor {
             }
         };
 
-        resume = new Button(new Texture(Gdx.files.internal("gui/resume.png")), "",
+        resume = new Button(new Texture(Gdx.files.internal("gui/resume.png")),
                 basePosition.x + background.getWidth()/2/SCALE, basePosition.y + background.getHeight()/3/SCALE) {
             @Override
             public void act() {
@@ -76,7 +76,7 @@ public class PauseMenuController implements InputProcessor {
                     gameState = RUN;
             }
         };
-        pause = new Button(new Texture(Gdx.files.internal("gui/pause.png")), "",
+        pause = new Button(new Texture(Gdx.files.internal("gui/pause.png")),
                 Gdx.graphics.getWidth() - 128/2/SCALE - 8, Gdx.graphics.getHeight() - 128/2/SCALE - 8) {
             @Override
             public void act() {

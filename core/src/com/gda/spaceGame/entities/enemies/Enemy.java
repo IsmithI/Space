@@ -8,14 +8,12 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.gda.spaceGame.controllers.GameState;
 import com.gda.spaceGame.entities.Bullet;
 import com.gda.spaceGame.entities.Player;
 import com.gda.spaceGame.entities.decorations.Punkt;
 import com.gda.spaceGame.screens.GameScreen;
 
 import static com.gda.spaceGame.SpaceMain.SCALE;
-import static com.gda.spaceGame.SpaceMain.gameState;
 
 /**
  * Created by Smith on 13.11.2016.
@@ -29,7 +27,7 @@ public class Enemy extends Actor {
     private Circle bounds;
     private final int worth;
 
-    private Texture punktTexture;
+    private final int z = 3;
 
     private float punktSpawnTimer = 0.5f;
 
@@ -46,29 +44,25 @@ public class Enemy extends Actor {
 
         bounds = new Circle();
         bounds.setRadius(sprite.getWidth()/4/SCALE);
-
-        punktTexture = new Texture(Gdx.files.internal("particles/punkt.png"));
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        checkCollision();
-
-        if (gameState == GameState.RUN) {
-            if (punktSpawnTimer <= 0) {
-                spawnPunkt();
-                punktSpawnTimer = 0.5f;
-            }
-            punktSpawnTimer -= Gdx.graphics.getDeltaTime();
-        }
-
-        sprite.setRotation(angle);
         sprite.setPosition(getX() - sprite.getWidth()/2, getY() - sprite.getHeight()/2);
         sprite.draw(batch, parentAlpha);
+        sprite.setRotation(angle);
+
+        checkCollision();
+
+        if (punktSpawnTimer <= 0) {
+            spawnPunkt();
+            punktSpawnTimer = 0.5f;
+        }
+        punktSpawnTimer -= Gdx.graphics.getDeltaTime();
     }
 
     private void spawnPunkt() {
-        getStage().addActor(new Punkt(punktTexture, getX(), getY(), angle));
+        getStage().addActor(new Punkt(new Texture(Gdx.files.internal("particles/punkt.png")), getX(), getY(), angle));
     }
 
     public boolean checkCollision() {
@@ -86,8 +80,6 @@ public class Enemy extends Actor {
             else if (actor instanceof Player) {
                 player = (Player) actor;
                 if (player.getBounds().overlaps(getBounds())) {
-                    player.die();
-                    gameState = GameState.FINISH;
                     remove();
                     return true;
                 }
@@ -152,9 +144,13 @@ public class Enemy extends Actor {
         return turn_angle;
     }
 
+    public int getZ() {
+        return z;
+    }
+
     @Override
     public int getZIndex() {
-        return 3;
+        return z;
     }
 
     public Circle getBounds() {

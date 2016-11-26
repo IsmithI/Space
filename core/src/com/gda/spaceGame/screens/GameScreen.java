@@ -120,9 +120,9 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-//        guiBatch.begin();
-//        guiBatch.draw(background, 0, 0, srcX, srcY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        guiBatch.end();
+        guiBatch.begin();
+        guiBatch.draw(background, 0, 0, srcX, srcY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        guiBatch.end();
 
         guiBatch.begin();
         font.draw(guiBatch, money + "$", 32/SCALE, Gdx.graphics.getHeight() - 32/SCALE, 0, Align.left, false);

@@ -21,6 +21,7 @@ public class Player extends Actor{
     private float speed, turn;
     private ShootType shootType;
     private Sprite sprite;
+    private final int z = 5;
 
     private Circle bounds;
 
@@ -104,7 +105,7 @@ public class Player extends Actor{
 
     @Override
     public int getZIndex() {
-        return 10;
+        return z;
     }
 
     public Circle getBounds() {

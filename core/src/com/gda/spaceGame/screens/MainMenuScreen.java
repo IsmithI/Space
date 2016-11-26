@@ -20,10 +20,9 @@ import com.gda.spaceGame.GUI.MenuShip;
 import com.gda.spaceGame.SpaceMain;
 import com.gda.spaceGame.controllers.GameState;
 import com.gda.spaceGame.controllers.ShipChooseController;
+import com.gda.spaceGame.entities.decorations.MainText;
 import com.gda.spaceGame.utilities.parallax.ParallaxBackground;
 import com.gda.spaceGame.utilities.parallax.ParallaxLayer;
-
-import java.math.BigInteger;
 
 import static com.gda.spaceGame.SpaceMain.SCALE;
 import static com.gda.spaceGame.SpaceMain.gameState;
@@ -82,6 +81,8 @@ public class MainMenuScreen implements Screen, InputProcessor {
                 new ParallaxLayer(new TextureRegion(background), new Vector2(0, 5), new Vector2(0, 0))
         }, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new Vector2(0, 100));
 
+        MainText mainText = new MainText(game, shipChooseController);
+        stage.addActor(mainText);
 
         input = new InputMultiplexer();
         input.addProcessor(stage);
@@ -116,9 +117,9 @@ public class MainMenuScreen implements Screen, InputProcessor {
     private void drawGUI() {
         batch.begin();
 
-        labelFont.draw(batch, "Tap to start", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()*7/8, 0, Align.center, false);
-        gameDataFont.draw(batch, money + "$", Gdx.graphics.getWidth()*2/3, Gdx.graphics.getHeight()/6, 0, Align.center, false);
-        gameDataFont.draw(batch, "Best time" + highscore, Gdx.graphics.getWidth()*2/3, Gdx.graphics.getHeight()/6 - 48/SCALE, 0, Align.center, false);
+//        labelFont.draw(batch, "Tap to start", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()*7/8, 0, Align.center, false);
+        gameDataFont.draw(batch, "Credits:   " + money, Gdx.graphics.getWidth()*2/3, Gdx.graphics.getHeight()/6, 0, Align.center, false);
+        gameDataFont.draw(batch, "Best time: " + highscore, Gdx.graphics.getWidth()*2/3, Gdx.graphics.getHeight()/6 - 48/SCALE, 0, Align.center, false);
 
         batch.end();
     }
@@ -127,8 +128,8 @@ public class MainMenuScreen implements Screen, InputProcessor {
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/m12.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        parameter.size = (int) (72/SCALE);
-        labelFont = gen.generateFont(parameter);
+//        parameter.size = (int) (72/SCALE);
+//        labelFont = gen.generateFont(parameter);
 
         parameter.size = (int) (36/SCALE);
         gameDataFont = gen.generateFont(parameter);
@@ -186,8 +187,6 @@ public class MainMenuScreen implements Screen, InputProcessor {
     public void dispose() {
         batch.dispose();
         stage.dispose();
-        labelFont.dispose();
-        gameDataFont.dispose();
     }
 
 
@@ -210,15 +209,15 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("touchdown");
+//        System.out.println("touchdown");
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        System.out.println("touchup");
+        /*System.out.println("touchup");
         currentShip = shipChooseController.getCurrentShip();
-        game.setScreen(new GameScreen(game, currentShip));
+        game.setScreen(new GameScreen(game, currentShip));*/
         return true;
     }
 

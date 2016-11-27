@@ -1,7 +1,6 @@
 package com.gda.spaceGame.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -23,7 +21,6 @@ import com.gda.spaceGame.controllers.GameState;
 import com.gda.spaceGame.controllers.ShipChooseController;
 import com.gda.spaceGame.utilities.parallax.ParallaxBackground;
 import com.gda.spaceGame.utilities.parallax.ParallaxLayer;
-import javafx.scene.transform.Scale;
 
 import static com.gda.spaceGame.SpaceMain.SCALE;
 import static com.gda.spaceGame.SpaceMain.gameState;

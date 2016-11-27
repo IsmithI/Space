@@ -1,6 +1,7 @@
 package com.gda.spaceGame.screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -21,6 +23,7 @@ import com.gda.spaceGame.controllers.GameState;
 import com.gda.spaceGame.controllers.ShipChooseController;
 import com.gda.spaceGame.utilities.parallax.ParallaxBackground;
 import com.gda.spaceGame.utilities.parallax.ParallaxLayer;
+import javafx.scene.transform.Scale;
 
 import static com.gda.spaceGame.SpaceMain.SCALE;
 import static com.gda.spaceGame.SpaceMain.gameState;
@@ -67,7 +70,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
         stage = new Stage(viewport, batch);
 
-        shipChooseController = new ShipChooseController(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        shipChooseController = new ShipChooseController(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         stage.addActor(shipChooseController);
         stage.addActor(shipChooseController.getPrevShip());
         stage.addActor(shipChooseController.getNextShip());
@@ -113,8 +116,8 @@ public class MainMenuScreen implements Screen, InputProcessor {
         batch.begin();
 
 //        labelFont.draw(batch, "Tap to start", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()*7/8, 0, Align.center, false);
-        gameDataFont.draw(batch, "Credits:   " + money, Gdx.graphics.getWidth()*2/3, Gdx.graphics.getHeight()/6, 0, Align.center, false);
-        gameDataFont.draw(batch, "Best time: " + highscore, Gdx.graphics.getWidth()*2/3, Gdx.graphics.getHeight()/6 - 48/SCALE, 0, Align.center, false);
+        gameDataFont.draw(batch, "Credits:   " + money, Gdx.graphics.getWidth() * 2 / 3, Gdx.graphics.getHeight() / 6, 0, Align.center, false);
+        gameDataFont.draw(batch, "Best time: " + highscore, Gdx.graphics.getWidth() * 2 / 3, Gdx.graphics.getHeight() / 6 - 48 / SCALE, 0, Align.center, false);
 
         batch.end();
     }
@@ -123,18 +126,19 @@ public class MainMenuScreen implements Screen, InputProcessor {
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/m12.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        parameter.size = (int) (72/SCALE);
+        parameter.size = (int) (72 / SCALE);
         labelFont = gen.generateFont(parameter);
 
-        stage.addActor(new Button("Tap to screen", 0, 0, 200, 200, labelFont){
+        stage.addActor(new Button(new Texture(Gdx.files.internal("Empty.png")), new Texture(Gdx.files.internal("Empty.png")), "Tap to screen", 2, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 7 / 8, (int) (72 / SCALE), labelFont) {
             @Override
-            public void act(){
+            public void act() {
                 currentShip = shipChooseController.getCurrentShip();
                 game.setScreen(new GameScreen(game, currentShip));
+
             }
         });
 
-        parameter.size = (int) (36/SCALE);
+        parameter.size = (int) (36 / SCALE);
         gameDataFont = gen.generateFont(parameter);
 
         gen.dispose();

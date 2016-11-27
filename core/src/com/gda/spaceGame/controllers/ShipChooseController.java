@@ -24,12 +24,12 @@ public class ShipChooseController extends Actor{
     private MenuShip currentShip;
     private int i = 0;
     private Button nextShip, prevShip;
-    private BitmapFont font;
+//    private BitmapFont font;
 
     public ShipChooseController(float x, float y) {
         setPosition(x, y);
 
-        generateFont();
+//        generateFont();
 
         ships = new ArrayList<MenuShip>();
 
@@ -38,17 +38,15 @@ public class ShipChooseController extends Actor{
         ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship3.png")), 10, 8, ShootType.SINGLE));
 //        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship3.png")), 15, 8, ShootType.DOUBLE));
 
-        nextShip = new Button(new Texture(Gdx.files.internal("gui/buttons/arrow.png")), "",
-                Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/2,
-                font) {
+        nextShip = new Button(new Texture(Gdx.files.internal("gui/buttons/arrow.png")),
+                Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/2) {
             @Override
             public void act() {
                 nextShip();
             }
         };
-        prevShip = new Button(new Texture(Gdx.files.internal("gui/buttons/arrow.png")), "",
-                Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/2,
-                font) {
+        prevShip = new Button(new Texture(Gdx.files.internal("gui/buttons/arrow.png")),
+                Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/2) {
             @Override
             public void act() {
                 prevShip();
@@ -60,12 +58,13 @@ public class ShipChooseController extends Actor{
         currentShip = ships.get(0);
     }
 
-    private void generateFont() {
+    //Useless method
+    /*private void generateFont() {
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/m12.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (int) (32/SCALE);
         font = gen.generateFont(parameter);
-    }
+    }*/
 
     private void prevShip() {
         if (i > 0) {

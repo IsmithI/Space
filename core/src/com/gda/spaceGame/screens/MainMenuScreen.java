@@ -1,6 +1,7 @@
 package com.gda.spaceGame.screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -112,9 +114,8 @@ public class MainMenuScreen implements Screen, InputProcessor {
     private void drawGUI() {
         batch.begin();
 
-//        labelFont.draw(batch, "Tap to start", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()*7/8, 0, Align.center, false);
-        gameDataFont.draw(batch, "Credits:   " + money, Gdx.graphics.getWidth() * 2 / 3, Gdx.graphics.getHeight() / 6, 0, Align.center, false);
-        gameDataFont.draw(batch, "Best time: " + highscore, Gdx.graphics.getWidth() * 2 / 3, Gdx.graphics.getHeight() / 6 - 48 / SCALE, 0, Align.center, false);
+        gameDataFont.draw(batch, "Credits:    " + money, Gdx.graphics.getWidth() * 2 / 3, Gdx.graphics.getHeight() / 6, 0, Align.left, false);
+        gameDataFont.draw(batch, "Best time: " + highscore, Gdx.graphics.getWidth() * 2 / 3, Gdx.graphics.getHeight() / 6 - 48 / SCALE, 0, Align.left, false);
 
         batch.end();
     }
@@ -126,12 +127,11 @@ public class MainMenuScreen implements Screen, InputProcessor {
         parameter.size = (int) (72 / SCALE);
         labelFont = gen.generateFont(parameter);
 
-        stage.addActor(new Button(new Texture(Gdx.files.internal("Empty.png")), new Texture(Gdx.files.internal("Empty.png")), "Tap to screen", 2, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 7 / 8, (int) (72 / SCALE), labelFont) {
+        stage.addActor(new Button(new Texture(Gdx.files.internal("Start.png")), 1.5f, /*new Texture(Gdx.files.internal("Empty.png")),*/ Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 7 / 8) {
             @Override
             public void act() {
                 currentShip = shipChooseController.getCurrentShip();
                 game.setScreen(new GameScreen(game, currentShip));
-
             }
         });
 

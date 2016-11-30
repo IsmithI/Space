@@ -29,23 +29,16 @@ public abstract class Button extends Actor {
     private boolean touched = false;
     private int size;
 
-    public Button(Texture touchUp,Texture touchDown, CharSequence value, int space, float x, float y, int size, BitmapFont font) {
-        //space - it's quantity of space in the value
+    public Button(/*Texture touchUp, Texture touchDown,*/Texture texture, float scale, float x, float y) {
         this.touchUp = touchUp;
         this.touchDown = touchDown;
-        int sprSize = size * 3;
-        this.size = size;
 
-        this.sprite = new Sprite(touchUp);
-        this.value = value;
-        this.font = font;
+        sprite = new Sprite(/*touchUp*/texture);
 
+        sprite.setOrigin(0, 0);
+        sprite.setScale(scale);
 
-        this.sprite.setOrigin(0, 0);
-        this.sprite.setScale(1 / SCALE);
-        this.sprite.setSize(sprSize * (value.length() - space * 0.5f), sprSize);
-
-        setBounds(x - sprite.getWidth() / 2 / SCALE, y - sprite.getHeight() / 2 / SCALE, sprite.getWidth() / SCALE, sprite.getHeight() / SCALE);
+        setBounds(x - sprite.getWidth() / 2 * scale, y - sprite.getHeight() / 2 * scale, sprite.getWidth() * scale, sprite.getHeight() * scale);
 
         myListener();
     }
@@ -73,25 +66,14 @@ public abstract class Button extends Actor {
 //        this.touchUp = touchUp;
 //        this.touchDown = touchDown;
 
-        this.sprite = new Sprite(texture/*touchUp*/);
+        sprite = new Sprite(texture/*touchUp*/);
 
         this.sprite.setOrigin(0, 0);
-        this.sprite.setScale(1 / SCALE);
+        sprite.setScale(1 / SCALE);
 
         setBounds(x - sprite.getWidth() / 2 / SCALE, y - sprite.getHeight() / 2 / SCALE, sprite.getWidth() / SCALE, sprite.getHeight() / SCALE);
 
         myListener();
-       /* addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                act();
-            }
-        });*/
     }
 
     @Override
@@ -100,7 +82,10 @@ public abstract class Button extends Actor {
             sprite.setPosition(getX(), getY());
             sprite.draw(batch);
         }
-        if (font != null) font.draw(batch, value, getX(), getY() + size, 0, Align.left, false);
+        if (font != null) {
+            font.draw(batch, value, getX(), getY(), 0, Align.center, false);
+            System.out.println(getX() + "--" + getY());
+        }
     }
 
     private boolean isTouched() {
@@ -123,7 +108,7 @@ public abstract class Button extends Actor {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 checkTouch = true;
-                sprite.setTexture(touchDown);
+//                sprite.setTexture(touchDown);
 //                if (setting.getVibration())
 //                    Gdx.input.vibrate(50);
                 return true;
@@ -132,7 +117,7 @@ public abstract class Button extends Actor {
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 checkTouch = false;
-                sprite.setTexture(touchUp);
+//                sprite.setTexture(touchUp);
             }
 
             @Override

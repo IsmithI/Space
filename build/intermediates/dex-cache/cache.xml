@@ -2,11 +2,39 @@
 <items version="2" >
 
     <item
+        jar="C:\Users\ANTON\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.9.4\194b33382d6d58fad031521ba3331d926c476c9b\gdx-backend-android-1.9.4.jar"
+        jumboMode="true"
+        revision="24.0.3"
+        sha1="194b33382d6d58fad031521ba3331d926c476c9b">
+        <dex dex="C:\Gabriel\Space\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-backend-android-1.9.4_88984b0d90c84b1acb00aced5258930dc53c3e95\classes.dex" />
+    </item>
+    <item
+        jar="C:\Gabriel\Space\android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="24.0.3"
+        sha1="70b6fd303d4c2d1f68a9c336ac478d66ee1fa906">
+        <dex dex="C:\Gabriel\Space\android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_9d5f53f62309228879802ec93bba25489bc3310d\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ANTON\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-freetype\1.9.4\8816dd669b8ca09e7d5e9575807e92c4318f708\gdx-freetype-1.9.4.jar"
+        jumboMode="true"
+        revision="24.0.3"
+        sha1="08816dd669b8ca09e7d5e9575807e92c4318f708">
+        <dex dex="C:\Gabriel\Space\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-freetype-1.9.4_145fd4027c53c3071dc616c0c5182496df794878\classes.dex" />
+    </item>
+    <item
         jar="C:\Gabriel\Space\android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         revision="24.0.3"
-        sha1="ecf95d1ff4f945c4ce1d2bc64a11b366eb28fda5">
+        sha1="3efbe42fa3f6934922a0a68dff4fc0896a4ee0a9">
         <dex dex="C:\Gabriel\Space\android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_7b57beda8036b755b2d907f7a72a5f4f58e605c7\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ANTON\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.9.4\4b4b7962d1bc75af0438f5c81ec1010557bc9ee5\gdx-1.9.4.jar"
+        jumboMode="true"
+        revision="24.0.3"
+        sha1="4b4b7962d1bc75af0438f5c81ec1010557bc9ee5">
+        <dex dex="C:\Gabriel\Space\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-1.9.4_0f7dd4ff78113c8cc6354793b4ba1fbfc72c3ef4\classes.dex" />
     </item>
 
 </items>

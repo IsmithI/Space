@@ -34,7 +34,7 @@ public class Player extends Actor{
 
         speed = ship.getSpeed();
         turn = ship.getTurn();
-        shootType = ship.getShootType();
+//        shootType = ship.getShootType();
         sprite = new Sprite(ship.getSprite().getTexture());
 
         sprite.setScale(1/SCALE);

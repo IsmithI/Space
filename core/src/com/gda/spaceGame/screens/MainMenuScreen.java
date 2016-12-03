@@ -114,8 +114,8 @@ public class MainMenuScreen implements Screen, InputProcessor {
     private void drawGUI() {
         batch.begin();
 
-        gameDataFont.draw(batch, "Credits:    " + money, Gdx.graphics.getWidth() * 2 / 3, Gdx.graphics.getHeight() / 6, 0, Align.left, false);
-        gameDataFont.draw(batch, "Best time: " + highscore, Gdx.graphics.getWidth() * 2 / 3, Gdx.graphics.getHeight() / 6 - 48 / SCALE, 0, Align.left, false);
+        gameDataFont.draw(batch, "" + money, 90/SCALE, Gdx.graphics.getHeight() - 20/SCALE, 0, Align.left, false);
+        gameDataFont.draw(batch, "" + highscore, 90/SCALE, Gdx.graphics.getHeight() - 90 / SCALE, 0, Align.left, false);
 
         batch.end();
     }
@@ -127,34 +127,61 @@ public class MainMenuScreen implements Screen, InputProcessor {
         parameter.size = (int) (72 / SCALE);
         labelFont = gen.generateFont(parameter);
 
-        stage.addActor(new Button(new Texture(Gdx.files.internal("Start.png")), 1.5f, /*new Texture(Gdx.files.internal("Empty.png")),*/ Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 7 / 8) {
-            @Override
-            public void act() {
-                currentShip = shipChooseController.getCurrentShip();
-                game.setScreen(new GameScreen(game, currentShip));
-            }
-        });
-
         parameter.size = (int) (36 / SCALE);
         gameDataFont = gen.generateFont(parameter);
 
         gen.dispose();
     }
 
+    private void addButton() {
+
+    }
+
     @Override
     public void show() {
+        stage.addActor(new Button(new Texture(Gdx.files.internal("StartE.png")), 4, /*new Texture(Gdx.files.internal("Empty.png")),*/ Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 7 / 8) {
+            private float alphaColor = 1;
+            private float alphaChange = 0.015f;
 
+            @Override
+            public void act() {
+                currentShip = shipChooseController.getCurrentShip();
+                game.setScreen(new GameScreen(game, currentShip));
+            }
+
+            @Override
+            public void draw(Batch batch, float alpha) {
+                getSprite().setPosition(getX(), getY());
+                getSprite().draw(batch);
+                if (alphaColor >= 1 || alphaColor <= 0.3f) alphaChange *= -1;
+                alphaColor += alphaChange;
+                getSprite().setAlpha(alphaColor);
+            }
+        });
+
+        stage.addActor(new Button(new Texture(Gdx.files.internal("gui/exit.png")), 0.3f, Gdx.graphics.getWidth() - 72 / SCALE, Gdx.graphics.getHeight() - 72 / SCALE) {
+            @Override
+            public void act() {
+                System.exit(0);
+            }
+        });
+        //Isn't button
+        stage.addActor(new Button(new Texture(Gdx.files.internal("gui/money.png")), 0.15f, 36/SCALE, Gdx.graphics.getHeight() - 36/SCALE) {
+            @Override
+            public void act() {
+            }
+        });
+        stage.addActor(new Button(new Texture(Gdx.files.internal("gui/timer.png")), 0.15f, 36/SCALE, Gdx.graphics.getHeight() - 108/SCALE) {
+            @Override
+            public void act() {
+            }
+        });
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-//        batch.begin();
-//        batch.draw(background, 0, 0, 0, srcY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        batch.end();
-//        srcY -= 6;
 
         bck.render(delta);
 
@@ -213,15 +240,11 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//        System.out.println("touchdown");
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        /*System.out.println("touchup");
-        currentShip = shipChooseController.getCurrentShip();
-        game.setScreen(new GameScreen(game, currentShip));*/
         return true;
     }
 

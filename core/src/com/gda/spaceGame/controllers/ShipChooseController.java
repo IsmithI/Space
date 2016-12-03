@@ -18,7 +18,7 @@ import static com.gda.spaceGame.SpaceMain.SCALE;
 /**
  * Created by smith on 15.10.16.
  */
-public class ShipChooseController extends Actor{
+public class ShipChooseController extends Actor {
 
     private ArrayList<MenuShip> ships;
     private MenuShip currentShip;
@@ -33,20 +33,20 @@ public class ShipChooseController extends Actor{
 
         ships = new ArrayList<MenuShip>();
 
-        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship1.png")), 8, 5, ShootType.SINGLE));
-        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship2.png")), 10, 5, ShootType.SINGLE));
-        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship3.png")), 10, 8, ShootType.SINGLE));
+        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship1.png")), 2, 5, 1, "Newbie"/*, ShootType.SINGLE*/));
+        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship2.png")), 3, 5, 3, "Vengeance"/*, ShootType.SINGLE*/));
+        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship3.png")), 3, 8, 2, "Ranger"/*, ShootType.SINGLE*/));
 //        ships.add(new MenuShip(new Texture(Gdx.files.internal("ships/ship3.png")), 15, 8, ShootType.DOUBLE));
 
-        nextShip = new Button(new Texture(Gdx.files.internal("gui/buttons/arrow.png")),
-                Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/2) {
+        nextShip = new Button(new Texture(Gdx.files.internal("gui/buttons/arrow.png")), 0.6f,
+                Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 6, Gdx.graphics.getHeight() / 2) {
             @Override
             public void act() {
                 nextShip();
             }
         };
-        prevShip = new Button(new Texture(Gdx.files.internal("gui/buttons/arrow.png")),
-                Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/2) {
+        prevShip = new Button(new Texture(Gdx.files.internal("gui/buttons/arrow.png")), 0.6f,
+                Gdx.graphics.getWidth() / 6, Gdx.graphics.getHeight() / 2) {
             @Override
             public void act() {
                 prevShip();
@@ -74,7 +74,7 @@ public class ShipChooseController extends Actor{
     }
 
     private void nextShip() {
-        if (i < ships.size()-1) {
+        if (i < ships.size() - 1) {
             addAction(Actions.moveBy(-Gdx.graphics.getWidth() / 4, 0, 0.5f));
             currentShip = ships.get(++i);
         }
@@ -97,7 +97,7 @@ public class ShipChooseController extends Actor{
     private void updateShipPosition() {
         int i = 0;
         for (MenuShip ship : ships) {
-            ship.setPosition(getX() + (Gdx.graphics.getWidth()/4)*i, getY());
+            ship.setPosition(getX() + (Gdx.graphics.getWidth() / 4) * i, getY());
             i++;
         }
     }

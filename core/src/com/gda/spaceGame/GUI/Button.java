@@ -19,19 +19,17 @@ import static com.gda.spaceGame.SpaceMain.SCALE;
 public abstract class Button extends Actor {
 
     private Sprite sprite;
-    private CharSequence value;
-    private BitmapFont font;
 
     private Texture touchDown;
     private Texture touchUp;
     private boolean checkTouch;
 
     private boolean touched = false;
-    private int size;
 
     public Button(/*Texture touchUp, Texture touchDown,*/Texture texture, float scale, float x, float y) {
         this.touchUp = touchUp;
         this.touchDown = touchDown;
+        scale/=SCALE;
 
         sprite = new Sprite(/*touchUp*/texture);
 
@@ -43,29 +41,10 @@ public abstract class Button extends Actor {
         myListener();
     }
 
-    public Button(CharSequence value, float x, float y, float width, float height, BitmapFont font) {
-        this.value = value;
-        this.font = font;
-        font.setColor(Color.WHITE);
-        setBounds(x, y, width, height);
-
-        addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return super.touchDown(event, x, y, pointer, button);
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                act();
-            }
-        });
-    }
 
     public Button(/*Texture touchUp,Texture touchDown*/Texture texture, float x, float y) {
 //        this.touchUp = touchUp;
 //        this.touchDown = touchDown;
-
         sprite = new Sprite(texture/*touchUp*/);
 
         this.sprite.setOrigin(0, 0);
@@ -78,14 +57,8 @@ public abstract class Button extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha) {
-        if (sprite != null) {
-            sprite.setPosition(getX(), getY());
-            sprite.draw(batch);
-        }
-        if (font != null) {
-            font.draw(batch, value, getX(), getY(), 0, Align.center, false);
-            System.out.println(getX() + "--" + getY());
-        }
+        sprite.setPosition(getX(), getY());
+        sprite.draw(batch);
     }
 
     private boolean isTouched() {
